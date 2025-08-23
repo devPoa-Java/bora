@@ -1,6 +1,7 @@
 package com.pessoal.bora.api.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,6 +31,12 @@ public class DriverService {
 				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 		return new DriverDTO(driver);
 	}
+	@Transactional
+	public void delete(Long id) {
+		Driver driver = driverRepository.findById(id)
+				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+		driverRepository.delete(driver);
+	}
 
 	@Transactional
 	public void saveDriver(DriverDTO driverDto) {
@@ -39,16 +46,14 @@ public class DriverService {
 		driverRepository.save(driver);
 
 	}
-	
+
 	@Transactional
 	public void updateDriver(Long id, DriverDTO driverDto) {
 		Driver driver = driverRepository.findById(id).get();
 		driver.setName(driverDto.getName());
 		driver.setBirthDate(driverDto.getBirthDate());
 		driverRepository.save(driver);
-	
-		
-		
+
 	}
 
 }

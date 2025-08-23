@@ -1,8 +1,10 @@
 package com.pessoal.bora.api.controllers;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,6 +33,10 @@ public class DriverController {
 	public DriverDTO findById(@PathVariable Long id) {
 		return driverService.findById(id);
 	}
+	@DeleteMapping(value = "/{id}")
+	public void delet(@PathVariable Long id) {
+		driverService.delete(id);
+	}
 
 	@PostMapping
 	public void saveDriver(@RequestBody DriverDTO driver) {
@@ -40,10 +46,12 @@ public class DriverController {
 	@PatchMapping(value = "/{id}")
 	public DriverDTO updateDriver( @PathVariable Long id, @RequestBody DriverDTO driverDto) {
 		DriverDTO driver = driverService.findById(id);
-		driver.setName(driverDto.getName());
-		driver.setBirthDate(driverDto.getBirthDate());
+		driver.setName(Optional.ofNullable(driverDto.getName()).orElse(driverDto.getName()));
+		driver.setBirthDate(Optional.ofNullable(driverDto.getBirthDate()).orElse(driverDto.getBirthDate()));
 		driverService.updateDriver(id,driver);
 		return driver;
+		
+		
 	}
 
 	

@@ -4,6 +4,8 @@ import java.util.Date;
 
 import com.pessoal.bora.api.domain.Driver;
 
+
+
 public class DriverDTO {
 
 	private Long id;
