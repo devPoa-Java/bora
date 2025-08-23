@@ -17,16 +17,38 @@ public class DriverService {
 
 	@Autowired
 	private DriverRepository driverRepository;
-	
+
 	@Transactional(readOnly = true)
-	public List<DriverDTO> findAll(){
+	public List<DriverDTO> findAll() {
 		List<Driver> list = driverRepository.findAll();
 		return list.stream().map(x -> new DriverDTO(x)).toList();
 	}
-	
+
 	@Transactional(readOnly = true)
 	public DriverDTO findById(Long id) {
-		Driver driver =  driverRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-	    return  new DriverDTO(driver);
+		Driver driver = driverRepository.findById(id)
+				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+		return new DriverDTO(driver);
 	}
+
+	@Transactional
+	public void saveDriver(DriverDTO driverDto) {
+		Driver driver = new Driver();
+		driver.setName(driverDto.getName());
+		driver.setBirthDate(driverDto.getBirthDate());
+		driverRepository.save(driver);
+
+	}
+	
+	@Transactional
+	public void updateDriver(Long id, DriverDTO driverDto) {
+		Driver driver = driverRepository.findById(id).get();
+		driver.setName(driverDto.getName());
+		driver.setBirthDate(driverDto.getBirthDate());
+		driverRepository.save(driver);
+	
+		
+		
+	}
+
 }

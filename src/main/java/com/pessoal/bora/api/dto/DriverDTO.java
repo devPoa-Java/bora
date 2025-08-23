@@ -5,11 +5,11 @@ import java.util.Date;
 import com.pessoal.bora.api.domain.Driver;
 
 public class DriverDTO {
-	
+
 	private Long id;
 	private String name;
 	private Date birthDate;
-	
+
 	public DriverDTO() {
 	}
 
@@ -42,9 +42,5 @@ public class DriverDTO {
 	public void setBirthDate(Date birthDate) {
 		this.birthDate = birthDate;
 	}
-	
-	
-	
-	
 
 }
