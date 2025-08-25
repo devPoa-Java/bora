@@ -24,14 +24,15 @@ public class DriverController {
 
 	@GetMapping
 	public List<DriverDTO> findAll() {
-		List<DriverDTO> listDrivers = driverService.findAll();
-		return listDrivers;
+		return driverService.findAll();
+
 	}
 
 	@GetMapping(value = "/{id}")
 	public DriverDTO findById(@PathVariable Long id) {
 		return driverService.findById(id);
 	}
+
 	@DeleteMapping(value = "/{id}")
 	public void delet(@PathVariable Long id) {
 		driverService.delete(id);
@@ -41,22 +42,14 @@ public class DriverController {
 	public void saveDriver(@RequestBody DriverDTO driver) {
 		driverService.saveDriver(driver);
 	}
-	
-	@PatchMapping(value = "/{id}")
-	public DriverDTO updateDriver( @PathVariable Long id, @RequestBody DriverDTO driverDto) {
-		DriverDTO driver = driverService.findById(id);
-		if(driverDto.getName() != null) {
-		driver.setName(driverDto.getName());
-		}
-		if(driverDto.getBirthDate() != null) {
-		driver.setBirthDate(driverDto.getBirthDate());
-		}
-		driverService.updateDriver(id,driver);
-		return driver;
-		
-		
-	}
 
-	
+	@PatchMapping(value = "/{id}")
+	public void updateDriver(@PathVariable Long id, @RequestBody DriverDTO driverDto) {
+		DriverDTO driver = driverService.findById(id);
+		driver.setName(driverDto.getName());
+		driver.setBirthDate(driverDto.getBirthDate());
+		driverService.updateDriver(id, driver);
+
+	}
 
 }

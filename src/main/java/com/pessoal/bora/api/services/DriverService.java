@@ -1,6 +1,7 @@
 package com.pessoal.bora.api.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -49,8 +50,8 @@ public class DriverService {
 	@Transactional
 	public void updateDriver(Long id, DriverDTO driverDto) {
 		Driver driver = driverRepository.findById(id).get();
-		driver.setName(driverDto.getName());
-		driver.setBirthDate(driverDto.getBirthDate());
+		driver.setName(Optional.ofNullable(driverDto.getName()).orElse(driver.getName()));
+		driver.setBirthDate(Optional.ofNullable(driverDto.getBirthDate()).orElse(driver.getBirthDate()));
 		driverRepository.save(driver);
 
 	}
