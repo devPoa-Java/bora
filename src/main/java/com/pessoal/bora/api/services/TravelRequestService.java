@@ -1,6 +1,8 @@
 package com.pessoal.bora.api.services;
 
 import java.time.Instant;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.EntityModel;
@@ -22,6 +24,11 @@ import com.pessoal.bora.api.repositories.TravelRequestRepository;
 
 @Service
 public class TravelRequestService {
+
+	private static final int MAX_TRAVEL_TIME = 600;
+
+	@Autowired
+	private GMapsService gMapService;
 
 	@Autowired
 	private TravelRequestRepository travelRequestRepository;
@@ -46,12 +53,59 @@ public class TravelRequestService {
 		response.setDestination(travelRequest.getDestination());
 		response.setStatus(travelRequest.getStatus());
 		response.setCreationDate(travelRequest.getCreationDate());
-		
-		return response; 
+
+		return response;
 
 	}
 
-	public EntityModel<TravelResponseDTO> buildOutputModel(TravelRequestDTO request, TravelResponseDTO response) {
+	@Transactional
+	public List<TravelRequestDTO> listNearbyTravelRequests(String currentAddress) {
+		List<TravelRequest> requests = travelRequestRepository.findByStatus(TravelRequestStatus.CREATED);
+		return requests.stream()
+				.filter(tr -> gMapService.getDistanceBetweenAddresses(currentAddress, tr.getOrigin()) < MAX_TRAVEL_TIME)
+				.map(tr -> new TravelRequestDTO(tr)).collect(Collectors.toList());
+	}
+	
+	@Transactional
+	public List<EntityModel<TravelResponseDTO>> buildOutputModel(List<TravelRequestDTO> requests){
+		 return requests.stream().map(tr -> buildOutputModel(tr, mapper(tr))).collect(Collectors.toList());
+		 
+	
+	}
+	
+	
+	
+	private TravelResponseDTO mapper(TravelRequestDTO travelRequestDTO) {
+		
+		Passenger passenger = passengerRepository.findById(travelRequestDTO.getPassengerId())
+				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+		TravelRequest travelRequest = new TravelRequest();
+		travelRequest.setId(travelRequestDTO.getId());
+		travelRequest.setPassenger(passenger);
+		travelRequest.setOrigin(travelRequestDTO.getOrigin());
+		travelRequest.setDestination(travelRequestDTO.getDestination());
+		travelRequest.setStatus(TravelRequestStatus.CREATED);
+		travelRequest.setCreationDate(Instant.now());
+		
+		TravelResponseDTO response = new TravelResponseDTO();
+		response.setId(travelRequest.getId());
+		response.setOrigin(travelRequest.getOrigin());
+		response.setDestination(travelRequest.getDestination());
+		response.setStatus(travelRequest.getStatus());
+		response.setCreationDate(travelRequest.getCreationDate());
+
+		return response;
+
+	}
+	
+
+	
+	
+	
+	
+	
+	public EntityModel<TravelResponseDTO> buildOutputModel(TravelRequestDTO request, TravelResponseDTO response){
 		Passenger passenger = passengerRepository.findById(request.getPassengerId())
 				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 		
@@ -64,7 +118,9 @@ public class TravelRequestService {
 											.withTitle(passenger.getName());
 											model.add(passengerLink);
 
+		
 		return model;
 	}
+	
 
 }
