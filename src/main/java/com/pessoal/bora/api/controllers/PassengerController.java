@@ -33,8 +33,9 @@ public class PassengerController {
 	}
 
 	@PostMapping
-	public void savePassenger(@RequestBody PassengerDTO passengerDTO) {
-		passengerService.savePassenger(passengerDTO);
+	public PassengerDTO savePassenger(@RequestBody PassengerDTO passengerDTO) {
+		PassengerDTO passenger = passengerService.savePassenger(passengerDTO);
+		return passenger;
 	}
 
 	@PatchMapping(value = "/{id}")

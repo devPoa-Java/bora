@@ -34,10 +34,11 @@ public class PassengerService {
 	}
 	
 	@Transactional
-	public void savePassenger(PassengerDTO passengerDto) {
+	public PassengerDTO savePassenger(PassengerDTO passengerDto) {
 		Passenger passenger = new Passenger();
 		passenger.setName(passengerDto.getName());
 		passengerRepository.save(passenger);
+		return new PassengerDTO(passenger);
 		
 	}
 	

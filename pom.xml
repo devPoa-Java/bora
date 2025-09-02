@@ -73,6 +73,19 @@
 		    <artifactId>json-smart</artifactId>
 		    <version>2.6.0</version><!--$NO-MVN-MAN-VER$-->
    		</dependency>
+   		<!-- https://mvnrepository.com/artifact/io.rest-assured/rest-assured -->
+		<dependency>
+		    <groupId>io.rest-assured</groupId>
+		    <artifactId>rest-assured</artifactId>
+		    <version>5.5.6</version><!--$NO-MVN-MAN-VER$-->
+		    <scope>test</scope>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-contract-wiremock -->
+		<dependency>
+		    <groupId>org.springframework.cloud</groupId>
+		    <artifactId>spring-cloud-contract-wiremock</artifactId>
+		    <version>4.3.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -81,6 +94,18 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			<plugin>
+	        <groupId>org.apache.maven.plugins</groupId>
+		        <artifactId>maven-failsafe-plugin</artifactId>
+		        <executions>
+		          <execution>
+		            <goals>
+		              <goal>integration-test</goal>
+		              <goal>verify</goal>
+		            </goals>
+		          </execution>
+		        </executions>
+	      </plugin>
 		</plugins>
 	</build>
 
