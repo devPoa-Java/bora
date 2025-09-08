@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.pessoal.bora.api.dto.PassengerDTO;
 import com.pessoal.bora.api.services.PassengerService;
 
+import jakarta.annotation.security.RolesAllowed;
+
 @RestController
 @RequestMapping(value = "/passengers", produces = "application/json")
 public class PassengerController {
@@ -33,6 +35,7 @@ public class PassengerController {
 	}
 
 	@PostMapping
+	@RolesAllowed("ROLE_ADMIN")
 	public PassengerDTO savePassenger(@RequestBody PassengerDTO passengerDTO) {
 		PassengerDTO passenger = passengerService.savePassenger(passengerDTO);
 		return passenger;
