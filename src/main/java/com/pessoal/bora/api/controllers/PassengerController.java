@@ -35,7 +35,7 @@ public class PassengerController {
 	}
 
 	@PostMapping
-	@RolesAllowed("ROLE_ADMIN")
+	@RolesAllowed("ADMIN")
 	public PassengerDTO savePassenger(@RequestBody PassengerDTO passengerDTO) {
 		PassengerDTO passenger = passengerService.savePassenger(passengerDTO);
 		return passenger;
