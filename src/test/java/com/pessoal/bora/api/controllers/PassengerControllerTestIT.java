@@ -3,7 +3,7 @@ package com.pessoal.bora.api.controllers;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
-
+import static io.restassured.RestAssured.basic;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,7 +20,9 @@ public class PassengerControllerTestIT {
 	
 	@BeforeEach	
 	public void setup() {
-		RestAssured.port = port;
+		RestAssured.baseURI = "https://localhost:" + port;
+		RestAssured.useRelaxedHTTPSValidation();
+		RestAssured.authentication = basic("admin", "password");
 		RestAssured.defaultParser = Parser.JSON;
 	}
 	

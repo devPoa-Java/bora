@@ -5,6 +5,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.okJson;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static com.pessoal.bora.api.infrastructure.FileUtils.loadFileContents;
+import static io.restassured.RestAssured.basic;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -40,8 +41,9 @@ public class TravelRequestControllerTestIT {
 
 	@BeforeEach
 	private void setup() {
-
-		RestAssured.port = port;
+		RestAssured.baseURI = "https://localhost:" + port;
+		RestAssured.useRelaxedHTTPSValidation();
+		RestAssured.authentication = basic("admin", "password");
 	}
 
 	@Test
