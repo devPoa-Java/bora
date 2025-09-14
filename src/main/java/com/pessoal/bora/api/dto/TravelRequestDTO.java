@@ -2,11 +2,17 @@ package com.pessoal.bora.api.dto;
 
 import com.pessoal.bora.api.domain.TravelRequest;
 
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+
 public class TravelRequestDTO {
 
-	private Long passengerId;
 	private Long id;
+	@NotNull(message = "O campo passengerId não pode ser nulo")
+	private Long passengerId;
+	@NotEmpty(message = "O campo origin não pode estar em branco")
 	private String origin;
+	@NotEmpty(message = "O campo destination não pode estar em branco")
 	private String destination;
 
 	public TravelRequestDTO() {

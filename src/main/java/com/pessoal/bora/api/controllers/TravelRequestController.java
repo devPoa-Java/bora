@@ -15,6 +15,8 @@ import com.pessoal.bora.api.dto.TravelRequestDTO;
 import com.pessoal.bora.api.dto.TravelResponseDTO;
 import com.pessoal.bora.api.services.TravelRequestService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping(value = "/travelRequests", produces = "application/json")
 public class TravelRequestController {
@@ -23,7 +25,7 @@ public class TravelRequestController {
 	private TravelRequestService travelRequestService;
 
 	@PostMapping
-	public EntityModel<TravelResponseDTO> saveTravelRequest(@RequestBody TravelRequestDTO request) {
+	public EntityModel<TravelResponseDTO> saveTravelRequest(@Valid @RequestBody TravelRequestDTO request) {
 		TravelResponseDTO response = travelRequestService.saveTravelRequest(request);
 		return travelRequestService.buildOutputModel(request, response);
 
