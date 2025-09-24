@@ -1,8 +1,9 @@
 package com.pessoal.bora.api.controllers;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -17,17 +18,19 @@ import com.pessoal.bora.api.services.DriverService;
 
 @RestController
 @RequestMapping(value = "/drivers", produces = "application/json")
-public class DriverController {
+public class DriverController implements DriverSwagger {
 
 	@Autowired
 	private DriverService driverService;
 
 	@GetMapping
-	public List<DriverDTO> findAll() {
-		return driverService.findAll();
-
+	public Page<DriverDTO> findAll(@PageableDefault(page = 0, size = 10) Pageable pageable) {
+		
+		Page<DriverDTO> driverPage = driverService.findAll(pageable);
+		
+		return driverPage;
 	}
-
+ 
 	@GetMapping(value = "/{id}")
 	public DriverDTO findById(@PathVariable Long id) {
 		return driverService.findById(id);

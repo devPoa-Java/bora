@@ -4,12 +4,18 @@ import java.util.Date;
 
 import com.pessoal.bora.api.domain.Driver;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.Size;
+
 
 
 public class DriverDTO {
 
 	private Long id;
+	@Schema(description = "Nome do motorista")
+	@Size(min = 5, max = 255)
 	private String name;
+	@Schema(description = "Data de nascimento do motorista")
 	private Date birthDate;
 
 	public DriverDTO() {

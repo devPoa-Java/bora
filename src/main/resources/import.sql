@@ -1,4 +1,14 @@
 INSERT INTO tb_driver(name, birth_Date) VALUES ('Sandro dos Santos', '1983-04-14');
 INSERT INTO tb_driver(name, birth_Date) VALUES ('Alexandre Saudate', '1986-08-18');
+INSERT INTO tb_driver(name, birth_Date) VALUES ('Test1', '1986-08-18');
+INSERT INTO tb_driver(name, birth_Date) VALUES ('Test2', '1986-08-18');
+INSERT INTO tb_driver(name, birth_Date) VALUES ('Test3', '1986-08-18');
+INSERT INTO tb_driver(name, birth_Date) VALUES ('Test4', '1986-08-18');
+INSERT INTO tb_driver(name, birth_Date) VALUES ('Test5', '1986-08-18');
+INSERT INTO tb_driver(name, birth_Date) VALUES ('Test6', '1986-08-18');
+INSERT INTO tb_driver(name, birth_Date) VALUES ('Test7', '1986-08-18');
+INSERT INTO tb_driver(name, birth_Date) VALUES ('Test8', '1986-08-18');
+INSERT INTO tb_driver(name, birth_Date) VALUES ('Test9', '1986-08-18');
+INSERT INTO tb_driver(name, birth_Date) VALUES ('Test10', '1986-08-18');
 INSERT INTO tb_passenger(name) VALUES ('Alexandre Saudate');
 INSERT INTO tb_passenger(name) VALUES ('test2');

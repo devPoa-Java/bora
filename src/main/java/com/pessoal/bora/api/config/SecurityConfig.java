@@ -65,7 +65,7 @@ public class SecurityConfig {
 	public SecurityFilterChain configure(HttpSecurity http) throws Exception {
 
 		http
-			.authorizeHttpRequests((auth) -> auth.anyRequest().authenticated())
+			.authorizeHttpRequests((auth) -> auth.requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll().anyRequest().authenticated())
 			.httpBasic(Customizer.withDefaults())
 			.csrf((csrf) -> csrf.disable())
 			.sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
