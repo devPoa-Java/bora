@@ -1,11 +1,7 @@
 package com.pessoal.bora.api.controllers;
 
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PagedResourcesAssembler;
-import org.springframework.hateoas.PagedModel;
-import org.springframework.http.ResponseEntity;
+import org.springframework.hateoas.CollectionModel;
 
-import com.pessoal.bora.api.domain.Driver;
 import com.pessoal.bora.api.dto.DriverDTO;
 import com.pessoal.bora.api.incoming.errorhandling.ErrorResponse;
 
@@ -20,7 +16,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 public interface DriverSwagger {
 	
 	    @Operation(description = "Lista de todos os motoristas")
-	 	public ResponseEntity<PagedModel<DriverDTO>> findAll(Pageable pageable, PagedResourcesAssembler<Driver> assembler);
+	 	public CollectionModel<DriverDTO> findAll(int page);
 	
 	    @Operation(description = "Localiza um motorista específico", responses = {
 	    		@ApiResponse(responseCode = "200", description = "Caso o motorista tenha sido encontrado na base"),

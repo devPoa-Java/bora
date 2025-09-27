@@ -1,12 +1,13 @@
 package com.pessoal.bora.api.controllers;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
-import org.springframework.data.web.PagedResourcesAssembler;
-import org.springframework.hateoas.PagedModel;
-import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.Link;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pessoal.bora.api.domain.Driver;
@@ -25,7 +27,8 @@ import com.pessoal.bora.api.services.DriverService;
 @RequestMapping(value = "/drivers", produces = "application/json")
 public class DriverController implements DriverSwagger {
 	
-
+	private static final int PAGE_SIZE = 10;
+	
 	@Autowired
 	private DriverService driverService;
 	
@@ -33,12 +36,13 @@ public class DriverController implements DriverSwagger {
 	private DriverAssembler driverAssembler;
 
 	@GetMapping
-	public ResponseEntity<PagedModel<DriverDTO>> findAll(@PageableDefault(size = 10) Pageable pageable, PagedResourcesAssembler<Driver> assembler) {
+	public CollectionModel<DriverDTO> findAll(@RequestParam(defaultValue = "0") int page) {
 		
-		Page<Driver> driverPage = driverService.findAll(pageable);
-		PagedModel<DriverDTO> pagedModel =  assembler.toModel(driverPage, driverAssembler);
+		Page<Driver> driverPage = driverService.findAll(PageRequest.of(page, PAGE_SIZE));
+		CollectionModel<Driver> collectionModel = CollectionModel.of(driverPage.getContent());
 		
-		return ResponseEntity.ok(pagedModel);
+		Link lastPageLink = linkTo(methodOn(DriverController.class).findAll(driverPage.getTotalPages() - 1)).withRel("lastPage");
+		return driverAssembler.toCollectionModel(collectionModel).add(lastPageLink);
 	}
  
 	@GetMapping(value = "/{id}")
