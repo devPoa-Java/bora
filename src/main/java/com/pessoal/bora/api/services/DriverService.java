@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -16,14 +17,19 @@ import com.pessoal.bora.api.repositories.DriverRepository;
 
 @Service
 public class DriverService {
+	
+	private static final int PAGE_SIZE = 20;
 
 	@Autowired
 	private DriverRepository driverRepository;
 
 	@Transactional(readOnly = true)
-	public Page<DriverDTO> findAll(Pageable pageable) {
-		Page<Driver> list = driverRepository.findAll(pageable);
-		return list.map(DriverDTO::new);
+	public Page<Driver> findAll(Pageable pageable) {
+		if(pageable.getPageSize() > PAGE_SIZE) {
+			pageable = PageRequest.of(pageable.getPageNumber(), PAGE_SIZE);
+		}
+		
+		return driverRepository.findAll(pageable);
 	}
 
 	@Transactional(readOnly = true)

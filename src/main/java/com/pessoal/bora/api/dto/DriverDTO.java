@@ -2,6 +2,8 @@ package com.pessoal.bora.api.dto;
 
 import java.util.Date;
 
+import org.springframework.hateoas.RepresentationModel;
+
 import com.pessoal.bora.api.domain.Driver;
 
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -9,7 +11,7 @@ import jakarta.validation.constraints.Size;
 
 
 
-public class DriverDTO {
+public class DriverDTO extends RepresentationModel<DriverDTO> {
 
 	private Long id;
 	@Schema(description = "Nome do motorista")

@@ -4,6 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.PagedModel;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -13,22 +16,29 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.pessoal.bora.api.domain.Driver;
 import com.pessoal.bora.api.dto.DriverDTO;
+import com.pessoal.bora.api.services.DriverAssembler;
 import com.pessoal.bora.api.services.DriverService;
 
 @RestController
 @RequestMapping(value = "/drivers", produces = "application/json")
 public class DriverController implements DriverSwagger {
+	
 
 	@Autowired
 	private DriverService driverService;
+	
+	@Autowired
+	private DriverAssembler driverAssembler;
 
 	@GetMapping
-	public Page<DriverDTO> findAll(@PageableDefault(page = 0, size = 10) Pageable pageable) {
+	public ResponseEntity<PagedModel<DriverDTO>> findAll(@PageableDefault(size = 10) Pageable pageable, PagedResourcesAssembler<Driver> assembler) {
 		
-		Page<DriverDTO> driverPage = driverService.findAll(pageable);
+		Page<Driver> driverPage = driverService.findAll(pageable);
+		PagedModel<DriverDTO> pagedModel =  assembler.toModel(driverPage, driverAssembler);
 		
-		return driverPage;
+		return ResponseEntity.ok(pagedModel);
 	}
  
 	@GetMapping(value = "/{id}")

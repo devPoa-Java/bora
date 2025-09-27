@@ -1,5 +1,7 @@
 package com.pessoal.bora.api.config;
 
+import java.util.List;
+
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 @EnableWebSecurity
@@ -68,6 +73,7 @@ public class SecurityConfig {
 			.authorizeHttpRequests((auth) -> auth.requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll().anyRequest().authenticated())
 			.httpBasic(Customizer.withDefaults())
 			.csrf((csrf) -> csrf.disable())
+			.cors(corsConfigurer -> corsConfigurer.configurationSource(CorsConfigurationSource()))
 			.sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 			.headers(c1 -> c1.frameOptions(c2 -> c2.disable()));
 		return http.build();
@@ -75,9 +81,22 @@ public class SecurityConfig {
 	}
 	
 	@Bean
+	public CorsConfigurationSource CorsConfigurationSource() {
+		CorsConfiguration configuration = new CorsConfiguration();
+		configuration.setAllowedOrigins(List.of("https://bestcars.com"));
+		configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH"));
+		configuration.addAllowedHeader("*");
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", configuration);
+		return source;
+	}
+
+	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
+	
+	
 	
 	
 	

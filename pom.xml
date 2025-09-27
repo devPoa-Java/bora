@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.5.5</version>
+		<version>3.5.6</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.pessoal</groupId>
@@ -76,8 +76,7 @@
    		<!-- https://mvnrepository.com/artifact/io.rest-assured/rest-assured -->
 		<dependency>
 		    <groupId>io.rest-assured</groupId>
-		    <artifactId>rest-assured</artifactId>
-		    <version>5.5.6</version><!--$NO-MVN-MAN-VER$-->
+		    <artifactId>rest-assured</artifactId><!--$NO-MVN-MAN-VER$-->
 		    <scope>test</scope>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-contract-wiremock -->
